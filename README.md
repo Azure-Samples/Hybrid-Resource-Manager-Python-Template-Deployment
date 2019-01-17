@@ -248,7 +248,7 @@ Beginning the deployment...
 
 Done deploying!!
 
-You can connect via: `ssh azureSample@damp-dew-79.westus.local.cloudapp.azurestack.external`
+You can connect via: `ssh azureSample@damp-dew-79.local.cloudapp.azurestack.external`
 ```
 
-You should be able to run `ssh azureSample@{your dns value}.local.cloudapp.azurestack.external` to connect to your new VM.
+You should be able to run `ssh azureSample@{your dns name}` to connect to your new VM.
