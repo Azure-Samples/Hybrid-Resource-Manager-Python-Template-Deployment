@@ -1,13 +1,7 @@
-## [project-title] Changelog
+## Hybrid-Resource-Manager-Python-Template-Deployment Changelog
 
-<a name="x.y.z"></a>
-# x.y.z (yyyy-mm-dd)
+<a name="1.0.0"></a>
+# 1.0.0 (2019-01-16)
 
 *Features*
-* ...
-
-*Bug Fixes*
-* ...
-
-*Breaking Changes*
-* ...
+* Add Azure stack sample for creating ssh-enabled linux vm through template deployment 
