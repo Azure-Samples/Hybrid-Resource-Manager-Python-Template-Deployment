@@ -12,9 +12,12 @@ from azure.profiles import KnownProfiles
 # AZURE_RESOURCE_LOCATION: with your azure stack resource location
 # this example assumes your ssh public key present here: ~/id_rsa.pub
 
-my_subscription_id = os.environ.get('AZURE_SUBSCRIPTION_ID')   # your Azure Subscription Id
-my_resource_group = 'azure-python-deployment-sample'            # the resource group for deployment
-my_pub_ssh_key_path = os.path.expanduser('~/id_rsa.pub')   # the path to your rsa public key file
+my_subscription_id = os.environ.get(
+    'AZURE_SUBSCRIPTION_ID')   # your Azure Subscription Id
+# the resource group for deployment
+my_resource_group = 'azure-python-deployment-sample'
+# the path to your rsa public key file
+my_pub_ssh_key_path = os.path.expanduser('~/id_rsa.pub')
 
 # Set Azure stack supported API profile as the default profile
 KnownProfiles.default.use(KnownProfiles.v2018_03_01_hybrid)
@@ -31,7 +34,8 @@ print("Beginning the deployment... \n\n")
 # Deploy the template
 my_deployment = deployer.deploy()
 
-print("Done deploying!!\n\nYou can connect via: `ssh azureSample@{}.local.cloudapp.azurestack.external`".format(deployer.dns_label_prefix))
+print("Done deploying!!\n\nYou can connect via: `ssh azureSample@{}.local.cloudapp.azurestack.external`".format(
+    deployer.dns_label_prefix))
 
 # Destroy the resource group which contains the deployment
 # deployer.destroy()

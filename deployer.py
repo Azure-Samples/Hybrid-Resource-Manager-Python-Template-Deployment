@@ -7,6 +7,7 @@ from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
 from msrestazure.azure_cloud import get_cloud_from_metadata_endpoint
 
+
 class Deployer(object):
     """ Initialize the deployer class with subscription, resource group and public key.
 
@@ -26,7 +27,7 @@ class Deployer(object):
             tenant=os.environ['AZURE_TENANT_ID'],
             cloud_environment=mystack_cloud
         )
-       
+
         self.subscription_id = subscription_id
         self.resource_group = resource_group
         self.dns_label_prefix = self.name_generator.haikunate()
@@ -38,7 +39,7 @@ class Deployer(object):
 
         self.credentials = credentials
         self.client = ResourceManagementClient(self.credentials, self.subscription_id,
-            base_url=mystack_cloud.endpoints.resource_manager)
+                                               base_url=mystack_cloud.endpoints.resource_manager)
 
     def deploy(self):
         """Deploy the template to a resource group."""
@@ -49,7 +50,8 @@ class Deployer(object):
             }
         )
 
-        template_path = os.path.join(os.path.dirname(__file__), 'templates', 'template.json')
+        template_path = os.path.join(os.path.dirname(
+            __file__), 'templates', 'template.json')
         with open(template_path, 'r') as template_file_fd:
             template = json.load(template_file_fd)
 
