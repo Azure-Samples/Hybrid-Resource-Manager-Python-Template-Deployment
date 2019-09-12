@@ -1,7 +1,11 @@
 ---
-services: Azure-Stack
-platforms: python
-author: viananth
+page_type: sample
+languages:
+- python
+products:
+- azure
+description: "This sample explains how to use Azure Resource Manager templates to deploy your Resources to AzureStack."
+urlFragment: Hybrid-Resource-Manager-Python-Template-Deployment
 ---
 
 # Hybrid-Resource-Manager-Python-Template-Deployment
