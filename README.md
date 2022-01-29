@@ -149,7 +149,7 @@ The [Deployer class](https://github.com/azure-samples/Hybrid-Resource-Manager-Py
 import os.path
 import json
 from haikunator import Haikunator
-from azure.common.credentials import ServicePrincipalCredentials
+from azure.identity import DefaultAzureCredential
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
 from msrestazure.azure_cloud import get_cloud_from_metadata_endpoint
@@ -167,12 +167,7 @@ class Deployer(object):
         mystack_cloud = get_cloud_from_metadata_endpoint(
             os.environ['ARM_ENDPOINT'])
         subscription_id = os.environ['AZURE_SUBSCRIPTION_ID']
-        credentials = ServicePrincipalCredentials(
-            client_id=os.environ['AZURE_CLIENT_ID'],
-            secret=os.environ['AZURE_CLIENT_SECRET'],
-            tenant=os.environ['AZURE_TENANT_ID'],
-            cloud_environment=mystack_cloud
-        )
+        credentials = DefaultAzureCredential()
        
         self.subscription_id = subscription_id
         self.resource_group = resource_group
@@ -208,27 +203,27 @@ class Deployer(object):
         parameters = {k: {'value': v} for k, v in parameters.items()}
 
         deployment_properties = {
-            'mode': DeploymentMode.incremental,
+            'mode': DeploymentMode.INCREMENTAL,
             'template': template,
             'parameters': parameters
         }
 
-        deployment_async_operation = self.client.deployments.create_or_update(
+        deployment_async_operation = self.client.deployments.begin_create_or_update(
             self.resource_group,
             'azure-sample',
             deployment_properties
-        )
-        deployment_async_operation.wait()
+        ).result()
 
     def destroy(self):
         """Destroy the given resource group"""
-        self.client.resource_groups.delete(self.resource_group)
+        self.client.resource_groups.begin_delete(self.resource_group)
 ```
 
 The `__init__` method initializes the class with the subscription, resource group and public key. The method also fetches
-the Azure Active Directory bearer token, which will be used in each HTTP request to the Azure Management API. The class
-will raise exceptions under two conditions: if the public key path does not exist, or if there are empty
-values for `AZURE_TENANT_ID`, `AZURE_CLIENT_ID` or `AZURE_CLIENT_SECRET` environment variables.
+the Azure Identity token, which will be used in each HTTP request to the Azure Management API. Acquire a credential 
+object for the app identity. When running in the cloud, DefaultAzureCredential uses the app's managed identity (MSI) 
+or user-assigned service principal. When run locally, DefaultAzureCredential relies on environment variables named
+AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, and AZURE_TENANT_ID.
 
 The `deploy` method does the heavy lifting of creating or updating the resource group, preparing the template
 parameters and deploying the template.
